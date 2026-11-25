@@ -1,0 +1,239 @@
+/* ── Look: Japanese ink (default) ↔ meme mode ──────────────────────────
+   html[data-look="meme"] switches every section from ink-wash art to a
+   wall of memes about that section. Toggle: [data-look-switch] (look.js). */
+
+@font-face { font-family: 'Anton'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url(fonts/anton-400-latin.woff2) format('woff2'); }
+
+/* ── The switch (beside "Get the beta") ─────────────── */
+.look-switch { flex: none; border: 0; padding: 4px; margin: 0 -10px 0 0; background: none; cursor: pointer; border-radius: 999px; -webkit-tap-highlight-color: transparent; }
+.look-track { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; width: 70px; height: 36px; padding: 0 4px; border-radius: 999px;
+  background: var(--washi-2); border: 1px solid var(--line-2); box-shadow: inset 0 1px 2px rgb(27 25 22 / 0.08); transition: background-color 260ms var(--ease-out), border-color 260ms; }
+.look-opt { position: relative; z-index: 1; text-align: center; font-size: 15px; line-height: 1; transition: opacity 220ms, transform 260ms var(--ease-out); }
+.look-jp { font-family: var(--f-jp); color: var(--washi); }
+.look-meme { opacity: 0.55; filter: grayscale(0.6); }
+.look-knob { position: absolute; top: 3px; left: 3px; width: 30px; height: 28px; border-radius: 999px; background: var(--shu); box-shadow: 0 2px 6px rgb(27 25 22 / 0.25);
+  transition: transform 340ms cubic-bezier(0.34, 1.4, 0.5, 1), background-color 260ms; }
+.look-switch:hover .look-track { border-color: var(--sumi-3); }
+.look-switch:active .look-knob { width: 34px; }
+.look-switch:focus-visible { outline: 2px solid var(--shu); outline-offset: 2px; }
+.look-switch[aria-checked="true"] .look-knob { transform: translateX(32px); background: #FFD43B; }
+.look-switch[aria-checked="true"] .look-jp { color: var(--sumi-3); }
+.look-switch[aria-checked="true"] .look-meme { opacity: 1; filter: none; transform: scale(1.12); }
+.doc .nav-row .look-switch { margin-left: auto; margin-right: 4px; }
+.doc .nav-row .look-switch + .btn { margin-left: 0; }
+
+/* ── Japanese backgrounds for every section ─────────── */
+.jp-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.problem, .app, .features, .private, .maker, .faq, .doc-main { isolation: isolate; overflow: hidden; }
+.jp-bg::before, .jp-bg::after { content: ""; position: absolute; background-repeat: no-repeat; background-size: contain; }
+
+/* ::before = a traditional pattern (seigaiha waves, shippo circles, dots), faded by a mask
+   ::after  = ink-wash art reused from the brand image (no mask) */
+.jp-bg { --edge: max(-50px, calc(50% - 780px)); }
+.jp-bg::before, .jp-bg::after { content: ""; position: absolute; inset: 0; background-repeat: no-repeat; }
+.jp-bg-problem::before, .jp-bg-faq::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='%23F1EADB' stroke='%23B7381F' stroke-opacity='.17' stroke-width='1'%3E%3Cg transform='translate(20 -10)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(0 0)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(40 0)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(20 10)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(0 20)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(40 20)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(20 30)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0 / 40px 20px; }
+.jp-bg-private::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='%23161411' stroke='%23D9A441' stroke-opacity='.16' stroke-width='1'%3E%3Cg transform='translate(20 -10)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(0 0)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(40 0)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(20 10)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(0 20)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(40 20)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3Cg transform='translate(20 30)'%3E%3Ccircle r='20'/%3E%3Ccircle r='15'/%3E%3Ccircle r='10'/%3E%3Ccircle r='5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") 0 0 / 40px 20px; }
+.jp-bg-app::before, .jp-bg-maker::before, .jp-bg-doc::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%232D4263' stroke-opacity='.09' stroke-width='1'%3E%3Ccircle cx='0' cy='0' r='24'/%3E%3Ccircle cx='48' cy='0' r='24'/%3E%3Ccircle cx='0' cy='48' r='24'/%3E%3Ccircle cx='48' cy='48' r='24'/%3E%3Ccircle cx='24' cy='24' r='24'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 48px 48px; }
+.jp-bg-features::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='1.4' fill='%23B7381F' fill-opacity='.16'/%3E%3C/svg%3E") 0 0 / 36px 36px; }
+.jp-bg-problem::before { -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 60%); mask-image: linear-gradient(180deg, transparent 0%, #000 60%); }
+.jp-bg-faq::before { -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 65%); mask-image: linear-gradient(180deg, #000 0%, transparent 65%); }
+.jp-bg-private::before { -webkit-mask-image: linear-gradient(90deg, transparent 25%, #000 100%); mask-image: linear-gradient(90deg, transparent 25%, #000 100%); }
+.jp-bg-app::before, .jp-bg-doc::before { -webkit-mask-image: radial-gradient(ellipse 60% 70% at 100% 0%, #000, transparent 75%); mask-image: radial-gradient(ellipse 60% 70% at 100% 0%, #000, transparent 75%); }
+.jp-bg-maker::before { -webkit-mask-image: radial-gradient(ellipse 55% 80% at 0% 100%, #000, transparent 75%); mask-image: radial-gradient(ellipse 55% 80% at 0% 100%, #000, transparent 75%); }
+.jp-bg-features::before { -webkit-mask-image: linear-gradient(180deg, #000, transparent 45%); mask-image: linear-gradient(180deg, #000, transparent 45%); }
+
+/* art layers; side pieces sit at the page edges on wide screens */
+.jp-bg-problem::after { background-image: url(img/art-sakura.webp); background-size: clamp(170px, 19vw, 290px) auto; background-position: left var(--edge) top -14px; transform: scaleX(-1); }
+.jp-bg-app::after { background-image: url(img/art-sun.webp); background-size: clamp(220px, 24vw, 360px) auto; background-position: right var(--edge) top 40px; opacity: 0.45; }
+.jp-bg-features::after { background-image: url(img/art-sakura.webp), url(img/art-mountains.webp);
+  background-size: clamp(140px, 15vw, 230px) auto, 100% clamp(90px, 13vw, 190px); background-position: left var(--edge) top -10px, 50% 100%; opacity: 0.75; }
+.jp-bg-private::after { background-image: url(img/art-sun.webp); background-size: clamp(280px, 32vw, 480px) auto; background-position: right var(--edge) top 24px; opacity: 0.5; filter: grayscale(1) brightness(2.4); }
+.jp-bg-maker::after { display: none; }
+.jp-bg-faq::after { background-image: url(img/art-sakura.webp), url(img/art-fuji.webp);
+  background-size: clamp(150px, 16vw, 250px) auto, clamp(260px, 28vw, 420px) auto; background-position: right var(--edge) top -12px, left var(--edge) bottom 0; opacity: 0.8; }
+.jp-bg-doc::after { background-image: url(img/art-sun.webp), url(img/art-sakura.webp), url(img/art-mountains.webp);
+  background-size: clamp(200px, 26vw, 380px) auto, clamp(140px, 15vw, 230px) auto, 100% clamp(90px, 13vw, 190px);
+  background-position: right var(--edge) top 24px, left var(--edge) top -10px, 50% 100%; opacity: 0.85; }
+.doc-main { position: relative; padding-bottom: clamp(140px, 18vw, 240px); }
+@media (max-width: 760px) {
+  .jp-bg::after { opacity: 0.4; }
+  .jp-bg-features::after, .jp-bg-doc::after { opacity: 0.6; }
+}
+
+/* ── Meme mode ──────────────────────────────────────────────────────────
+   A clean notebook page with ONE hand-drawn stickman meme per section.
+   The content stays readable on its own; memes sit where the layout has room. */
+@font-face { font-family: 'Caveat'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url(fonts/caveat-600-latin.woff2) format('woff2'); }
+
+.smeme { display: none; }
+html[data-look="meme"] {
+  --washi: #FFFDF7; --washi-2: #FFF5CF; --paper: #FFFFFF;
+  --shu: #D6114F; --shu-2: #F0457A;
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --hl: #FFE14D;
+}
+/* ruled notebook paper */
+html[data-look="meme"] body { background: #FFFDF7 repeating-linear-gradient(180deg, transparent 0 35px, rgb(70 120 210 / 0.1) 35px 36px); }
+html[data-look="meme"] .problem, html[data-look="meme"] .faq { background: rgb(255 245 207 / 0.85); }
+html[data-look="meme"] .art, html[data-look="meme"] .jp-bg, html[data-look="meme"] .close-icon { display: none; }
+
+/* type: Anton headlines, a highlighter swipe on the big one, nothing outlined */
+html[data-look="meme"] :is(h1, h2, h3, .race-note, .lockup-name, .footer-mono) { text-transform: uppercase; font-weight: 400; letter-spacing: 0.005em; }
+html[data-look="meme"] h2 { line-height: 1.02; }
+html[data-look="meme"] .h1-big { display: inline; font-size: clamp(50px, 7vw, 100px); line-height: 1.04; letter-spacing: 0;
+  background: linear-gradient(transparent 58%, var(--hl) 58%, var(--hl) 90%, transparent 90%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+html[data-look="meme"] .h1-sub { font-weight: 650; }
+html[data-look="meme"] .race-note { font-size: clamp(22px, 2.2vw, 30px); }
+html[data-look="meme"] .slide-text h3 { font-weight: 400; }
+html[data-look="meme"] .seal, html[data-look="meme"] .paper-words .jp { font-family: var(--f-jp); text-transform: none; }
+html[data-look="meme"] .btn { box-shadow: 4px 4px 0 var(--hl), 4px 4px 0 2px #1B1916; }
+html[data-look="meme"] .btn-alt { box-shadow: inset 0 0 0 1.5px var(--sumi), 4px 4px 0 var(--hl), 4px 4px 0 2px #1B1916; }
+html[data-look="meme"] :is(.slide.is-active, .app-frame, .term:not(.term-dark)) { box-shadow: 6px 6px 0 #1B1916; }
+html[data-look="meme"] .nav { background: rgb(255 253 247 / 0.92); }
+
+/* the meme card: caption on top, the drawing in a framed comic panel */
+html[data-look="meme"] .smeme { display: block; position: relative; margin: 0; width: min(380px, 100%); background: #fff; border: 2.5px solid #1B1916; border-radius: 8px;
+  box-shadow: 6px 6px 0 #1B1916; transform: rotate(var(--tilt, -1.2deg)); transition: transform 300ms var(--ease-out);
+  animation: smeme-in 520ms cubic-bezier(0.34, 1.4, 0.5, 1) both; }
+html[data-look="meme"] .smeme:hover { transform: rotate(0deg) scale(1.02); }
+.smeme::before { /* masking tape */ content: ""; position: absolute; top: -13px; left: 50%; width: 92px; height: 24px; transform: translateX(-50%) rotate(-3deg);
+  background: rgb(255 225 77 / 0.72); border-left: 2px dashed rgb(0 0 0 / 0.08); border-right: 2px dashed rgb(0 0 0 / 0.08); }
+.smeme figcaption { padding: 18px 16px 12px; font: 800 17px/1.3 var(--f-body); color: #1B1916; white-space: pre-line; text-transform: none; letter-spacing: -0.01em; text-wrap: balance; }
+.smeme-panel { margin: 0 12px 12px; border: 2px solid #1B1916; border-radius: 4px; background: #FFFEFA; overflow: hidden; }
+.smeme svg { display: block; width: 100%; height: auto; }
+@keyframes smeme-in { from { opacity: 0; transform: rotate(var(--tilt, -1.2deg)) scale(0.9) translateY(10px); } }
+
+/* placement, per section */
+@media (min-width: 1025px) {
+  html[data-look="meme"] .hero-grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); }
+  html[data-look="meme"] .smeme[data-smeme="hero"] { justify-self: end; --tilt: 1.4deg; }
+  html[data-look="meme"] :is(.problem, .app) > .wrap { display: grid; grid-template-columns: minmax(0, 1fr) 370px; column-gap: 56px; align-items: start; }
+  html[data-look="meme"] :is(.problem, .app) > .wrap > * { grid-column: 1; }
+  html[data-look="meme"] :is(.problem, .app) > .wrap > .smeme { grid-column: 2; grid-row: 1 / span 2; }
+  html[data-look="meme"] :is(.problem .race, .problem .race-note, .app .app-frame) { grid-column: 1 / -1; }
+  html[data-look="meme"] .problem .smeme { --tilt: 1.4deg; }
+  html[data-look="meme"] .features > .wrap:has(.features-head) { display: grid; grid-template-columns: minmax(0, 1fr) 370px; column-gap: 56px; align-items: center; }
+}
+html[data-look="meme"] .problem .race { margin-top: 48px; }
+html[data-look="meme"] .hero { padding-bottom: clamp(64px, 10vh, 110px); }
+html[data-look="meme"] .close { padding-bottom: clamp(110px, 15vh, 160px); }
+html[data-look="meme"] .app .app-frame { margin-top: 48px; }
+html[data-look="meme"] .private-visual .smeme { --tilt: 1.4deg; align-self: center; margin-bottom: 18px; }
+html[data-look="meme"] .seal-col { flex-wrap: wrap; }
+html[data-look="meme"] .seal-col .smeme { width: min(340px, 100%); margin-top: 18px; }
+html[data-look="meme"] .faq-side .smeme { margin-top: 44px; width: min(360px, 100%); --tilt: 1.4deg; }
+html[data-look="meme"] .close .smeme { margin: 0 auto 44px; }
+html[data-look="meme"] .doc-wrap .smeme { margin: 28px 0 8px; }
+@media (max-width: 1024px) {
+  html[data-look="meme"] .smeme { margin-inline: auto; margin-top: 36px; }
+  html[data-look="meme"] .smeme[data-smeme="hero"] { margin-top: 44px; }
+  html[data-look="meme"] .seal-col .smeme { margin-inline: 0; }
+}
+
+/* ── drawing styles ── */
+.smeme .ink { fill: none; stroke: #1B1916; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.smeme .th { stroke-width: 2.4; }
+.smeme .hd { stroke-width: 2.2; }
+/* scaled stickmen keep the same line weight as full-size ones */
+.smeme .guy .ink { stroke-width: calc(3.4px * var(--k, 1)); }
+.smeme .guy .th { stroke-width: calc(2.4px * var(--k, 1)); }
+.smeme .guy .hd { stroke-width: calc(2.2px * var(--k, 1)); }
+.smeme .thin { stroke-width: 2; stroke-opacity: 0.55; }
+.smeme .faint { stroke: #A39B8F; }
+.smeme .grey { stroke: #B4ADA3; stroke-width: 5; }
+.smeme .kbd { stroke-width: 6; }
+.smeme .tear { fill: none; stroke: #5AA7F0; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 3 4; animation: sm-tear 0.5s linear infinite; }
+.smeme .hand { font: 600 19px/1 "Caveat", "Comic Sans MS", cursive; fill: #1B1916; }
+.smeme .hand.sm { font-size: 16px; }
+.smeme .hand.xs { font-size: 13px; }
+.smeme .hand.big { font-size: 26px; }
+.smeme .mono { font: 600 13px/1 ui-monospace, "JetBrains Mono", monospace; fill: #1B1916; }
+.smeme .mono.sm { font-size: 11px; }
+.smeme .stampbox { fill: rgb(214 17 79 / 0.06); stroke: #D6114F; stroke-width: 4; }
+.smeme .stampt { font: 400 36px/1 "Anton", Impact, sans-serif; fill: #D6114F; letter-spacing: 0.04em; }
+.smeme .rib-o { fill: none; stroke: #1B1916; stroke-width: 22; }
+.smeme .rib-i { fill: none; stroke: #fff; stroke-width: 17; }
+.smeme .rib-t { fill: none; stroke: #9A9184; stroke-width: 9; stroke-dasharray: 2.4 5.6; animation: sm-flow 0.35s linear infinite; }
+.smeme .code { fill: none; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 80; animation: sm-draw 3.2s var(--ease-out) infinite; }
+.smeme .c1 { stroke: #B7381F; } .smeme .c2 { stroke: #2D6CC4; animation-delay: 0.15s; } .smeme .c3 { stroke: #4F8A2E; animation-delay: 0.3s; }
+.smeme .c4 { stroke: #7A45B8; animation-delay: 0.45s; } .smeme .c5 { stroke: #D98A00; animation-delay: 0.6s; }
+.smeme .speedl { stroke-opacity: 0.4; stroke-width: 2.6; stroke-dasharray: 16 10; animation: sm-flow-back 0.3s linear infinite; }
+.smeme .cf { transform-box: fill-box; transform-origin: center; animation: sm-conf 1.1s ease-in infinite; }
+
+/* ── motion. Per-meme timing is generated in look.js; these are shared ── */
+.smeme .j { transform-box: view-box; }
+.smeme .tw { transform-box: fill-box; transform-origin: center; animation: sm-twinkle 1.6s ease-in-out infinite; }
+.smeme .tw2 { animation-delay: 0.5s; }
+@keyframes sm-flow { to { stroke-dashoffset: -8; } }
+@keyframes sm-flow-back { to { stroke-dashoffset: 26; } }
+@keyframes sm-draw { 0% { stroke-dashoffset: 80; } 30%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes sm-twinkle { 0%, 100% { transform: scale(0.4) rotate(0); opacity: 0.2; } 50% { transform: scale(1.15) rotate(45deg); opacity: 1; } }
+@keyframes sm-tear { to { stroke-dashoffset: -7; } }
+@keyframes sm-conf { from { transform: translate(0, 0) rotate(0); opacity: 1; } 85% { opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 0; } }
+@keyframes pf-spin { to { transform: rotate(360deg); } }
+@keyframes pf-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-1.5px); } 75% { transform: translateX(1.5px); } }
+@keyframes pf-c1 { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes pf-c2 { 0% { opacity: 0; } 50% { opacity: 1; } }
+@keyframes pf-t1 { 0% { opacity: 1; } 33.3% { opacity: 0; } }
+@keyframes pf-t2 { 0% { opacity: 0; } 33.3% { opacity: 1; } 66.6% { opacity: 0; } }
+@keyframes pf-t3 { 0% { opacity: 0; } 66.6% { opacity: 1; } }
+
+/* paused off screen; people who turn motion off get the punchline frame */
+.smeme.is-off * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .smeme, .smeme * { animation: none !important; }
+}
+
+/* switching animation (View Transitions where supported) */
+/* switching looks = flipping the page over like a card: the old look turns
+   edge-on, then the new look turns in from its back. Japanese → memes flips
+   one way, memes → Japanese the other. */
+html.pf-turn::view-transition { background: #1B1916; }
+html.pf-turn::view-transition-group(root) { animation: none; }
+html.pf-turn::view-transition-image-pair(root) { isolation: isolate; perspective: 2000px; }
+html.pf-turn::view-transition-old(root), html.pf-turn::view-transition-new(root) {
+  mix-blend-mode: normal; backface-visibility: hidden; transform-origin: 50% 50%;
+  animation-duration: 820ms; animation-fill-mode: both; animation-timing-function: linear; }
+html.pf-turn::view-transition-old(root) { animation-name: pf-flip-out; }
+html.pf-turn::view-transition-new(root) { animation-name: pf-flip-in; }
+html.pf-turn-back::view-transition-old(root) { animation-name: pf-flip-out-back; }
+html.pf-turn-back::view-transition-new(root) { animation-name: pf-flip-in-back; }
+@keyframes pf-flip-out {
+  0% { transform: rotateY(0deg) scale(1); filter: brightness(1); animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5); }
+  50% { transform: rotateY(90deg) scale(0.86); filter: brightness(0.6); }
+  50.1%, 100% { transform: rotateY(90deg) scale(0.86); opacity: 0; }
+}
+@keyframes pf-flip-in {
+  0%, 49.9% { transform: rotateY(-90deg) scale(0.86); opacity: 0; }
+  50% { transform: rotateY(-90deg) scale(0.86); filter: brightness(0.6); opacity: 1; animation-timing-function: cubic-bezier(0.1, 0.5, 0.3, 1); }
+  100% { transform: rotateY(0deg) scale(1); filter: brightness(1); }
+}
+@keyframes pf-flip-out-back {
+  0% { transform: rotateY(0deg) scale(1); filter: brightness(1); animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5); }
+  50% { transform: rotateY(-90deg) scale(0.86); filter: brightness(0.6); }
+  50.1%, 100% { transform: rotateY(-90deg) scale(0.86); opacity: 0; }
+}
+@keyframes pf-flip-in-back {
+  0%, 49.9% { transform: rotateY(90deg) scale(0.86); opacity: 0; }
+  50% { transform: rotateY(90deg) scale(0.86); filter: brightness(0.6); opacity: 1; animation-timing-function: cubic-bezier(0.1, 0.5, 0.3, 1); }
+  100% { transform: rotateY(0deg) scale(1); filter: brightness(1); }
+}
+@media (max-width: 420px) {
+  .look-track { width: 60px; height: 32px; }
+  .look-knob { width: 26px; height: 24px; }
+  .look-switch[aria-checked="true"] .look-knob { transform: translateX(26px); }
+  .look-opt { font-size: 13px; }
+  .look-switch { margin-right: -14px; }
+}
+.nav .btn-sm { white-space: nowrap; }
+@media (max-width: 400px) { .nav-row { gap: 14px; } .nav .btn-sm .tux { display: none; } }
+@media (max-width: 360px) {
+  .nav-row { gap: 10px; }
+  .lockup { gap: 8px; }
+  .lockup img { width: 30px; height: 30px; }
+  .lockup-name { font-size: 18px; }
+  .nav .btn-sm { padding: 8px 10px; font-size: 13px; }
+  .look-switch { margin-right: -8px; }
+}

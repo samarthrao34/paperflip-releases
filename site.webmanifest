@@ -1,0 +1,1 @@
+{ "name": "Paperflip", "short_name": "Paperflip", "icons": [{ "src": "assets/img/icon-256.png", "sizes": "256x256", "type": "image/png" }, { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" }], "theme_color": "#F9F5EA", "background_color": "#F9F5EA", "display": "browser" }
